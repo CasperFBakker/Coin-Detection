@@ -84,4 +84,3 @@ if __name__ == '__main__':
         show_coin(img_og, pos_coin_rounded, coin_type)
     else:
         [height, width, size_pixel] = Scale_Image(img_og, r_coin, coin_type)
-
