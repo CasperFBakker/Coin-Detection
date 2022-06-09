@@ -1,7 +1,7 @@
 import numpy as np
 import cv2 as cv
 
-img = cv.imread('image.jpg',0)
+img = cv.imread('image1.jpg',0)
 img = cv.medianBlur(img, 11)
 cimg = cv.cvtColor(img, cv.COLOR_GRAY2BGR)
 

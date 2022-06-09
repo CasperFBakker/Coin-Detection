@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import time
 
 #=========================================
-def moving_r_window(Image, RadiusWindow, minRadius=0, maxRadius=5):
+def moving_r_window(image, RadiusWindow, minRadius=0, maxRadius=5):
     coin = 1
     timeout = time.time() + 15
     while np.size(coin) != 3:
@@ -20,12 +20,12 @@ def moving_r_window(Image, RadiusWindow, minRadius=0, maxRadius=5):
 
 
 #=========================================
-def Scale_Image(Image, r_coin, coin_type):
+def Scale_Image(image, r_coin, coin_type):
         
     dia_coin_pix = r_coin * 2 
     coin_dia_mm = coin_bank[coin_type]
     size_pixel = coin_dia_mm / dia_coin_pix # pixel size in mm
-    [height, width, _] = np.shape(Image)
+    [height, width, _] = np.shape(image)
     height *= size_pixel
     width *= size_pixel
 
@@ -33,33 +33,49 @@ def Scale_Image(Image, r_coin, coin_type):
 
 
 #=========================================
-def show_coin(Image, Coin_Position, Coin_Type):
-    cv2.circle(Image, (y_coin, x_coin), r_coin, (0, 255, 0), 3) # draw edge of coin
-    cv2.circle(Image, (y_coin, x_coin), 2, (255, 255, 255), 3) # draw center of coin
+def show_coin(image, Coin_Position, Coin_Type):
+    cv2.circle(image, (y_coin, x_coin), r_coin, (0, 255, 0), 3) # draw edge of coin
+    cv2.circle(image, (y_coin, x_coin), 2, (255, 255, 255), 3) # draw center of coin
 
-    [height, width, size_pixel] = Scale_Image(Image, r_coin, coin_type) # find scale of image (in mm)
+    [height, width, size_pixel] = Scale_Image(image, r_coin, coin_type) # find scale of image (in mm)
 
-    cv2.putText(Image, f'Heigth {height} mm', (50, 1000), cv2.FONT_HERSHEY_SIMPLEX, 1.1, (255, 0, 0), 2)
-    cv2.putText(Image, f'Width {width} mm', (550, 1950), cv2.FONT_HERSHEY_SIMPLEX, 1.1, (255, 0, 0), 2)
+    cv2.putText(image, f'Heigth {height} mm', (50, 1000), cv2.FONT_HERSHEY_SIMPLEX, 1.1, (255, 0, 0), 2)
+    cv2.putText(image, f'Width {width} mm', (550, 1950), cv2.FONT_HERSHEY_SIMPLEX, 1.1, (255, 0, 0), 2)
     print( f'Heigth: {height} mm, Width: {width} mm, 1 pixel is {size_pixel} mm')
 
-    plt.imshow(Image)
+    plt.imshow(image)
     plt.show()
 
     return height, width, size_pixel
 
-def remove_coin(Image):
+def remove_coin(image, r_coin, x_coin, y_coin):
 
+    [width_img, height_img] = image.shape
+
+    x_crop = x_coin + r_coin + 5
+    y_crop = y_coin + r_coin + 5
+
+    
+    if x_coin < 0.5*width_img and y_coin < 0.5 * height_img:
+        print('1 kwa')
+    elif x_coin < 0.5*width_img and y_coin > 0.5 * height_img:
+        print('2 kwa')
+    elif x_coin > 0.5*width_img and y_coin < 0.5 * height_img:
+        print('3 kwa')
+    elif x_coin > 0.5*width_img and y_coin > 0.5 * height_img:
+        print('4 kwa')
+    else:
+        print('xd')
     # if x_coin =< 0.5*width_image?
     #     -x_coin, else +x_coin
-    crop_image = image[x:w, y:h]
+    #crop_image = image[x:w, y:h]
     return
 
 #=============== main ====================
 
 if __name__ == '__main__':
     
-    Visualize = True
+    visualize = True
     image = '/home/casper/Documents/Python/Coin Detection/Data/Euro1.jpeg'
     ks_blur = 11 # kernel size for medianBlur, it must be odd and greater than 1 (Recommended: 5, 11)
     coin_type = '1_Euro'
@@ -79,10 +95,10 @@ if __name__ == '__main__':
     pos_coin_rounded = np.uint16(np.around(find_coin))  # rounded position
     [y_coin, x_coin, r_coin]= pos_coin_rounded[0,:] # position of coin and radius of coin (in pixels)
 
-  
-    if Visualize == True:
+    remove_coin(img, r_coin, x_coin, y_coin)
+
+    if visualize == True:
         show_coin(img_og, pos_coin_rounded, coin_type)
     else:
         [height, width, size_pixel] = Scale_Image(img_og, r_coin, coin_type)
 
-        
