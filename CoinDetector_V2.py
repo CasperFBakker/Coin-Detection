@@ -50,25 +50,14 @@ def show_coin(image, Coin_Position, Coin_Type):
 
 def remove_coin(image, r_coin, x_coin, y_coin):
 
-    [width_img, height_img] = image.shape
+    [rows, columns,_] = image.shape
 
     x_crop = x_coin + r_coin + 5
     y_crop = y_coin + r_coin + 5
 
-    
-    if x_coin < 0.5*width_img and y_coin < 0.5 * height_img:
-        print('1 kwa')
-    elif x_coin < 0.5*width_img and y_coin > 0.5 * height_img:
-        print('2 kwa')
-    elif x_coin > 0.5*width_img and y_coin < 0.5 * height_img:
-        print('3 kwa')
-    elif x_coin > 0.5*width_img and y_coin > 0.5 * height_img:
-        print('4 kwa')
-    else:
-        print('xd')
-    # if x_coin =< 0.5*width_image?
-    #     -x_coin, else +x_coin
-    #crop_image = image[x:w, y:h]
+    crop_image = image[x_crop:rows, y_crop:columns]    
+    plt.imshow(crop_image)
+    plt.show()
     return
 
 #=============== main ====================
@@ -76,8 +65,8 @@ def remove_coin(image, r_coin, x_coin, y_coin):
 if __name__ == '__main__':
     
     visualize = True
-    image = '/home/casper/Documents/Python/Coin Detection/Data/Euro1.jpeg'
-    ks_blur = 11 # kernel size for medianBlur, it must be odd and greater than 1 (Recommended: 5, 11)
+    image = '/home/casper/Documents/Python/Coin Detection/Data/image2.jpg'
+    ks_blur = 5 # kernel size for medianBlur, it must be odd and greater than 1 (Recommended: 5, 11)
     coin_type = '1_Euro'
     coin_bank = {"2_Euro": 25.75, "1_Euro": 23.25, "50_Cent": 24.25,
                 "20_Cent": 22.25, "10_Cent": 19.75, "5_Cent": 21.25}
@@ -90,12 +79,12 @@ if __name__ == '__main__':
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # Grayscale image
     img = cv2.medianBlur(img, ks_blur) # Blur image 
 
-    find_coin = moving_r_window(img, RadiusWindow=25)   # find the coin in image
+    find_coin = moving_r_window(img, RadiusWindow=10)   # find the coin in image
     find_coin = np.reshape(find_coin, (1,3))            # remove unused dimension
     pos_coin_rounded = np.uint16(np.around(find_coin))  # rounded position
     [y_coin, x_coin, r_coin]= pos_coin_rounded[0,:] # position of coin and radius of coin (in pixels)
 
-    remove_coin(img, r_coin, x_coin, y_coin)
+    remove_coin(img_og, r_coin, x_coin, y_coin)
 
     if visualize == True:
         show_coin(img_og, pos_coin_rounded, coin_type)
