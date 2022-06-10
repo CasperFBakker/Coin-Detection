@@ -58,14 +58,14 @@ def remove_coin(image, r_coin, x_coin, y_coin):
     crop_image = image[x_crop:rows, y_crop:columns]    
     plt.imshow(crop_image)
     plt.show()
-    return
+    return crop_image
 
 #=============== main ====================
 
 if __name__ == '__main__':
     
     visualize = True
-    image = '/home/casper/Documents/Python/Coin Detection/Data/image2.jpg'
+    image = '/home/casper/Documents/Python/Image Detection/Data/image2.jpg'
     ks_blur = 5 # kernel size for medianBlur, it must be odd and greater than 1 (Recommended: 5, 11)
     coin_type = '1_Euro'
     coin_bank = {"2_Euro": 25.75, "1_Euro": 23.25, "50_Cent": 24.25,
