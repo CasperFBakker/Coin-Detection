@@ -65,9 +65,9 @@ def remove_coin(image, r_coin, x_coin, y_coin):
 if __name__ == '__main__':
     
     visualize = True
-    image = '/home/casper/Documents/Python/Image Detection/Data/image2.jpg'
-    ks_blur = 5 # kernel size for medianBlur, it must be odd and greater than 1 (Recommended: 5, 11)
-    coin_type = '1_Euro'
+    image = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/PHZD Test/Top_B/Top_B4.jpeg'
+    ks_blur =5 # kernel size for medianBlur, it must be odd and greater than 1 (Recommended: 5, 11)
+    coin_type = '10_Cent'
     coin_bank = {"2_Euro": 25.75, "1_Euro": 23.25, "50_Cent": 24.25,
                 "20_Cent": 22.25, "10_Cent": 19.75, "5_Cent": 21.25}
 
@@ -84,10 +84,9 @@ if __name__ == '__main__':
     pos_coin_rounded = np.uint16(np.around(find_coin))  # rounded position
     [y_coin, x_coin, r_coin]= pos_coin_rounded[0,:] # position of coin and radius of coin (in pixels)
 
-    remove_coin(img_og, r_coin, x_coin, y_coin)
+    #remove_coin(img_og, r_coin, x_coin, y_coin)
 
     if visualize == True:
         show_coin(img_og, pos_coin_rounded, coin_type)
     else:
         [height, width, size_pixel] = Scale_Image(img_og, r_coin, coin_type)
-
